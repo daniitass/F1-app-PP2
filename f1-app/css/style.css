@@ -22,17 +22,11 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
-.hero-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fff;
-}
+
 
 /* Logo */
 .logo-img {
-  width: 200px;
+  width: 500px;
   height: auto;
 }
 
@@ -53,4 +47,23 @@
   .logo-img {
     width: 150px;
   }
+}
+
+/* Navbar transparente y fijo */
+.site-nav {
+  background-color: rgba(255, 255, 255, 0.785); /* transparencia en el color */
+  position: fixed; /* nav fijo */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1030; /* encima del contenido */
+}
+
+
+body {
+  padding-top: 0;
+}
+
+.main-content {
+  padding-top: 70px; /* espacio arriba para el nav fijo */
 }
