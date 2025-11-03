@@ -1,15 +1,41 @@
-/* Hero section */
+/*  navbar */
+.site-nav {
+  background-color: rgba(255, 255, 255, 0.9);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1030;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo-img {
+  width: 140px;
+  height: auto;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler-icon {
+  filter: invert(0.5);
+}
+
+/*  hero + formulario */
 .hero {
   position: relative;
-  height: 70vh;
-  background-color: #000;
+  height: 100vh;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-img {
   object-fit: cover;
-  height: 100%;
   width: 100%;
+  height: 100%;
   opacity: 0.9;
 }
 
@@ -22,48 +48,36 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
-
-
-/* Logo */
-.logo-img {
-  width: 500px;
-  height: auto;
+/* Formulario sobre el hero */
+.registro-container {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 450px;
 }
 
-/* Footer */
-.footer-logo {
-  width: 80px;
-  height: auto;
+.registro-container h2 {
+  font-weight: bold;
 }
 
-/* Responsive ajustes */
+/*  RESPONSIVE */
 @media (max-width: 768px) {
-  .hero {
-    height: 50vh;
-  }
-  .hero-text h1 {
-    font-size: 1.8rem;
-  }
   .logo-img {
-    width: 150px;
+    width: 110px;
   }
-}
 
-/* Navbar transparente y fijo */
-.site-nav {
-  background-color: rgba(255, 255, 255, 0.785); /* transparencia en el color */
-  position: fixed; /* nav fijo */
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1030; /* encima del contenido */
-}
+  .registro-container {
+    padding: 1.5rem;
+    width: 95%;
+  }
 
-
-body {
-  padding-top: 0;
-}
-
-.main-content {
-  padding-top: 70px; /* espacio arriba para el nav fijo */
+  .hero {
+    height: 90vh;
+  }
 }
