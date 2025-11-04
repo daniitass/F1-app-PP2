@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apuestas F1 - Réplica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        /* Estilo para el fondo de la imagen de F1 */
+        .f1-header {
+            /* Simulación de la imagen de fondo. En una aplicación real usarías la URL de la imagen. */
+            background-image: url(/img/largada.jpeg); 
+            background-size: cover;
+            background-position: center;
+            height: 300px; /* Altura aproximada de la imagen */
+            position: relative;
+        }
+
+        /* Estilo para el botón Salir (Top Right) */
+        .f1-header .salir-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Estilo para el fondo gris de la sección de apuestas */
+        .betting-section {
+            background-color: #f0f0f0; /* Fondo gris claro */
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        /* Estilo para la barra de navegación (TOP 3, ESCUDERIAS, etc.) */
+        .betting-nav {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+
+        /* Estilo para el texto "PILOTOS" en rojo */
+        .betting-nav .active-nav {
+            color: #ff0000; /* Rojo F1 */
+            border-bottom: 3px solid #ff0000;
+            padding-bottom: 5px;
+        }
+
+        /* Contenedor del formulario con el fondo blanco redondeado */
+        .form-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilo para los selectores (dropdowns) */
+        .form-select {
+            height: 40px;
+            border-radius: 5px;
+            background-color: #e9e9e9; /* Gris claro en los selectores */
+            border: 1px solid #ccc;
+        }
+        
+        /* Estilo para el botón "Confirmar" */
+        .btn-confirmar {
+            background-color: #ff0000; /* Rojo F1 */
+            border-color: #ff0000;
+            color: white;
+            font-weight: bold;
+            padding: 8px 30px;
+            height: 40px;
+        }
+        
+        /* Footer/Pie de página */
+        .f1-footer {
+            background-color: #f0f0f0;
+            padding: 15px 0; /* Padding superior e inferior */
+            border-top: 1px solid #ccc; /* Separador sutil */
+        }
+
+        /* Estilo para el texto "TU SITIO SEGURO PARA CORRER" */
+        .f1-footer-text {
+            color: #ff0000; /* Rojo, como se ve en la imagen */
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        /* Logo F1 */
+        .f1-logo {
+            width: 50px; /* Tamaño del logo F1 */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="f1-header">
+        <a href="#" class="salir-btn">Salir</a>
+    </div>
+    
+    <div class="betting-section">
+        <div class="container">
+            
+            <div class="betting-nav row">
+                <div class="col">TOP 3</div>
+                <div class="col">ESCUDERIAS</div>
+                <div class="col active-nav">PILOTOS</div>
+                <div class="col">MIS APUESTAS</div>
+            </div>
+
+            <div class="form-container">
+                <form>
+                    <div class="row g-3 mb-3 align-items-center">
+                        <div class="col-md-4">
+                            <select class="form-select" aria-label="Piloto 1">
+                                <option selected>Piloto</option>
+                                <option value="1">Lewis Hamilton</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" aria-label="Puesto">
+                                <option selected>Puesto</option>
+                                <option value="1">1º</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" aria-label="Piloto del día">
+                                <option selected>Piloto del día</option>
+                                <option value="1">Piloto A</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-4">
+                            <select class="form-select" aria-label="Piloto 2">
+                                <option selected>Piloto</option>
+                                <option value="1">Carlos Sainz</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" aria-label="Piloto 3">
+                                <option selected>Piloto</option>
+                                <option value="1">Fernando Alonso</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 d-grid">
+                            <button type="submit" class="btn btn-confirmar">Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="f1-footer">
+        <div class="container d-flex justify-content-between align-items-center">
+            <p class="f1-footer-text">TU SITIO SEGURO PARA CORRER</p>
+            
+            <img src="img/f1 logo.png" alt="Logo F1" class="f1-logo"> 
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
