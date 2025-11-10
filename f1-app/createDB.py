@@ -157,6 +157,27 @@ def create_constructors_table(conn):
     except Error as e:
         print("Error al crear la tabla constructors:", e)
 
+def create_usuarios_table(conn):
+    """Crea la tabla usuarios si no existe."""
+    sql = """
+    CREATE TABLE IF NOT EXISTS usuarios (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT,
+        apellido TEXT,
+        email TEXT,
+        contrasena TEXT,
+        fecha_nacimiento TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(email)
+    );
+    """
+    try:
+        cur = conn.cursor()
+        cur.execute(sql)
+        conn.commit()
+    except Error as e:
+        print("Error al crear la tabla usuarios:", e)
+
 def import_constructors_from_csv(conn, csv_path):
     """Importa Constructores desde CSV a la tabla constructors.
 
@@ -391,7 +412,9 @@ def import_results_from_csv(conn, csv_path):
     return inserted, updated
 
 def main():
-    db_path = "f1_app.db"
+    # Use the database file located in the same directory as this script
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(script_dir, 'f1_app.db')
     csv_path = CSV_FILE
     # if a CSV path is passed as argument, use it
     if len(os.sys.argv) > 1:
@@ -435,6 +458,16 @@ def main():
     print("Sample race_results:")
     for rr in cur.execute("SELECT id, track, position, driver, team, season FROM race_results ORDER BY season DESC LIMIT 20"):
         print(rr)
+
+    # Crear la tabla de usuarios (si no existe) y mostrar muestra
+    create_usuarios_table(conn)
+    try:
+        users_count = cur.execute("SELECT COUNT(*) FROM usuarios").fetchone()[0]
+    except Exception:
+        users_count = 0
+    print(f"Usuarios table present. Rows: {users_count}")
+    for u in cur.execute("SELECT id, nombre, apellido, email, fecha_nacimiento, created_at FROM usuarios LIMIT 10"):
+        print(u)
 
     conn.close()
 
