@@ -167,6 +167,7 @@ def create_usuarios_table(conn):
         email TEXT,
         contrasena TEXT,
         fecha_nacimiento TEXT,
+        monto REAL DEFAULT 0.0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         UNIQUE(email)
     );
@@ -177,6 +178,20 @@ def create_usuarios_table(conn):
         conn.commit()
     except Error as e:
         print("Error al crear la tabla usuarios:", e)
+
+
+def ensure_usuarios_monto_column(conn):
+    """Asegura que la columna 'monto' exista en la tabla usuarios. Si no, la añade."""
+    try:
+        cur = conn.cursor()
+        cur.execute("PRAGMA table_info(usuarios)")
+        cols = [r[1] for r in cur.fetchall()]
+        if 'monto' not in cols:
+            print("Añadiendo columna 'monto' a usuarios...")
+            cur.execute("ALTER TABLE usuarios ADD COLUMN monto REAL DEFAULT 0.0")
+            conn.commit()
+    except Error as e:
+        print("Error asegurando columna monto:", e)
 
 def import_constructors_from_csv(conn, csv_path):
     """Importa Constructores desde CSV a la tabla constructors.
@@ -461,6 +476,7 @@ def main():
 
     # Crear la tabla de usuarios (si no existe) y mostrar muestra
     create_usuarios_table(conn)
+    ensure_usuarios_monto_column(conn)
     try:
         users_count = cur.execute("SELECT COUNT(*) FROM usuarios").fetchone()[0]
     except Exception:
