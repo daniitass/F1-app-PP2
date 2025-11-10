@@ -1,0 +1,58 @@
+# =========================================
+# 🐍 FLASK / PYTHON PROJECT .GITIGNORE
+# =========================================
+
+# --- Archivos y carpetas de Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Entornos virtuales ---
+venv/
+env/
+.venv/
+.env/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --- Archivos de configuración locales ---
+*.env
+*.ini
+*.cfg
+*.local
+
+# --- Archivos de base de datos ---
+instance/
+database.db
+*.sqlite3
+*.db
+
+# --- Logs y depuración ---
+*.log
+*.out
+*.err
+logs/
+*.bak
+
+# --- Archivos del sistema operativo ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- IDEs y editores ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Archivos temporales ---
+tmp/
+temp/
+*.tmp
+*.old
+*.orig
+
+# --- Archivos de compilación (si usás algo adicional) ---
+dist/
+build/
+*.egg-info/
