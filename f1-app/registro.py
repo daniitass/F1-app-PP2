@@ -48,6 +48,7 @@ def ensure_usuarios_table(conn):
             email TEXT UNIQUE,
             contrasena TEXT,
             fecha_nacimiento TEXT,
+            monto  REAL DEFAULT 0.0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')

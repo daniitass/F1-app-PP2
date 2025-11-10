@@ -5,100 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apuestas F1 - Réplica</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
     <style>
         /* Estilo para el fondo de la imagen de F1 */
         .f1-header {
-            /* Simulación de la imagen de fondo. En una aplicación real usarías la URL de la imagen. */
-            background-image: url(/f1-app/img/largada.jpeg); 
+            background-image: url(img/largada.jpeg);
             background-size: cover;
             background-position: center;
-            height: 300px; /* Altura aproximada de la imagen */
+            height: 300px;
             position: relative;
         }
+        .f1-header .salir-btn { position: absolute; top: 10px; right: 20px; color: white; text-decoration: none; font-weight: bold; }
+        .betting-section { background-color: #f0f0f0; padding-top: 20px; padding-bottom: 20px; }
+        .betting-nav { font-weight: bold; display: flex; justify-content: space-around; text-align: center; padding: 10px 0; margin-bottom: 20px; }
+        .betting-nav .active-nav { color: #ff0000; border-bottom: 3px solid #ff0000; padding-bottom: 5px; }
+        .form-container { background-color: white; border-radius: 8px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .form-select { height: 40px; border-radius: 5px; background-color: #e9e9e9; border: 1px solid #ccc; }
+        .btn-confirmar { background-color: #ff0000; border-color: #ff0000; color: white; font-weight: bold; padding: 8px 30px; height: 40px; }
+    .betting-section { background-color: #f0f0f0; padding-top: 20px; padding-bottom: 20px; margin-bottom: 30px; }
 
-        /* Estilo para el botón Salir (Top Right) */
-        .f1-header .salir-btn {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
+    /* Footer styling: give space from the betting section and larger logo */
+    .f1-footer { background-color: #f0f0f0; padding: 18px 0; border-top: 1px solid #ccc; margin-top: 36px; }
+    .f1-footer-text { color: #ff0000; font-size: 0.95rem; font-weight: bold; margin: 0; }
+    .f1-logo { width: 100px; height: auto; }
+        .nav-tabs.betting-nav .nav-link { color: #000000; background-color: transparent; border: none; border-radius: 0; }
+        .nav-tabs.betting-nav .nav-link:hover { color: #000000; }
+        .nav-tabs.betting-nav .nav-link.active, .nav-tabs.betting-nav .nav-link.show { color: #ff0000 !important; background-color: transparent !important; border: none !important; border-bottom: 3px solid #ff0000 !important; }
+        /* Narrow variants for TOP3 selects so they don't cover the whole width */
+        .top3-select {
+            width: 320px;         /* fixed preferred width */
+            max-width: 90%;       /* responsive fallback on very small screens */
+            margin-left: 0;       /* keep left aligned inside the form */
+            display: block;
         }
-
-        /* Estilo para el fondo gris de la sección de apuestas */
-        .betting-section {
-            background-color: #f0f0f0; /* Fondo gris claro */
-            padding-top: 20px;
-            padding-bottom: 20px;
-        }
-
-        /* Estilo para la barra de navegación (TOP 3, ESCUDERIAS, etc.) */
-        .betting-nav {
-            font-weight: bold;
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-            padding: 10px 0;
-            margin-bottom: 20px;
-        }
-
-        /* Estilo para el texto "PILOTOS" en rojo */
-        .betting-nav .active-nav {
-            color: #ff0000; /* Rojo F1 */
-            border-bottom: 3px solid #ff0000;
-            padding-bottom: 5px;
-        }
-
-        /* Contenedor del formulario con el fondo blanco redondeado */
-        .form-container {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Estilo para los selectores (dropdowns) */
-        .form-select {
-            height: 40px;
-            border-radius: 5px;
-            background-color: #e9e9e9; /* Gris claro en los selectores */
-            border: 1px solid #ccc;
-        }
-        
-        /* Estilo para el botón "Confirmar" */
-        .btn-confirmar {
-            background-color: #ff0000; /* Rojo F1 */
-            border-color: #ff0000;
-            color: white;
-            font-weight: bold;
-            padding: 8px 30px;
-            height: 40px;
-        }
-        
-        /* Footer/Pie de página */
-        .f1-footer {
-            background-color: #f0f0f0;
-            padding: 15px 0; /* Padding superior e inferior */
-            border-top: 1px solid #ccc; /* Separador sutil */
-        }
-
-        /* Estilo para el texto "TU SITIO SEGURO PARA CORRER" */
-        .f1-footer-text {
-            color: #ff0000; /* Rojo, como se ve en la imagen */
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin: 0;
-        }
-        
-        /* Logo F1 */
-        .f1-logo {
-            width: 50px; /* Tamaño del logo F1 */
-        }
+        /* custom dropdown styles */
+        .custom-select { position: relative; cursor: pointer; }
+        .custom-select .selected { padding: 8px 12px; background: #e9e9e9; border: 1px solid #ccc; border-radius: 5px; height: 40px; display:flex; align-items:center; }
+        .custom-select .options { list-style: none; padding: 6px; margin: 6px 0 0 0; background: #fff; border: 1px solid #ccc; border-radius: 6px; position: absolute; left: 0; right: 0; z-index: 1200; box-shadow: 0 6px 18px rgba(0,0,0,0.12); max-height: 150px; overflow-y: auto; display: none; }
+        .custom-select.open .options { display: block; }
+        .custom-select .options li { padding: 6px 8px; cursor: pointer; border-radius: 4px; }
+        .custom-select .options li:hover { background: #f5f5f5; }
+        .custom-select .options li.disabled { color: #999; cursor: default; }
     </style>
 </head>
 <body>
 
+    <img src="/img/Inicio.jpeg" alt="" width="100%">
     <div class="f1-header">
         <a href="#" class="salir-btn">Salir</a>
     </div>
@@ -106,54 +58,118 @@
     <div class="betting-section">
         <div class="container">
             
-            <div class="betting-nav row">
-                <div class="col">TOP 3</div>
-                <div class="col">ESCUDERIAS</div>
-                <div class="col active-nav">PILOTOS</div>
-                <div class="col">MIS APUESTAS</div>
-            </div>
+            <!-- Tabs: convert the nav columns into selectable tabs -->
+            <ul class="nav nav-tabs betting-nav" id="bettingTabs" role="tablist">
+                <li class="nav-item col" role="presentation">
+                    <button class="nav-link text-center" id="tab-top3" data-bs-toggle="tab" data-bs-target="#pane-top3" type="button" role="tab" aria-controls="pane-top3" aria-selected="false">TOP 3</button>
+                </li>
+                <li class="nav-item col" role="presentation">
+                    <button class="nav-link text-center" id="tab-constructors" data-bs-toggle="tab" data-bs-target="#pane-constructors" type="button" role="tab" aria-controls="pane-constructors" aria-selected="false">ESCUDERIAS</button>
+                </li>
+                <li class="nav-item col" role="presentation">
+                    <button class="nav-link active text-center active-nav" id="tab-drivers" data-bs-toggle="tab" data-bs-target="#pane-drivers" type="button" role="tab" aria-controls="pane-drivers" aria-selected="true">PILOTOS</button>
+                </li>
+                <li class="nav-item col" role="presentation">
+                    <button class="nav-link text-center" id="tab-mis" data-bs-toggle="tab" data-bs-target="#pane-mis" type="button" role="tab" aria-controls="pane-mis" aria-selected="false">MIS APUESTAS</button>
+                </li>
+            </ul>
 
-            <div class="form-container">
-                <form>
-                    <div class="row g-3 mb-3 align-items-center">
-                        <div class="col-md-4">
-                            <select class="form-select" aria-label="Piloto 1">
-                                <option selected>Piloto</option>
-                                <option value="1">Lewis Hamilton</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <select class="form-select" aria-label="Puesto">
-                                <option selected>Puesto</option>
-                                <option value="1">1º</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <select class="form-select" aria-label="Piloto del día">
-                                <option selected>Piloto del día</option>
-                                <option value="1">Piloto A</option>
-                            </select>
+            <div class="form-container mt-3">
+                <div class="tab-content" id="bettingTabsContent">
+                    <!-- TOP 3 pane -->
+                    <div class="tab-pane fade" id="pane-top3" role="tabpanel" aria-labelledby="tab-top3">
+                        <h5>Tipos de apuesta - TOP 3</h5>
+                        <form id="form-top3" class="mt-3">
+                            <div class="mb-3">
+                                <label for="top1" class="form-label">Primer puesto</label>
+                                <div class="custom-select top3-select" data-id="top1" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+                                    <input type="hidden" id="top1" name="top1" value="">
+                                    <div class="selected">Seleccionar piloto...</div>
+                                    <ul class="options" role="listbox"></ul>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="top2" class="form-label">Segundo puesto</label>
+                                <div class="custom-select top3-select" data-id="top2" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+                                    <input type="hidden" id="top2" name="top2" value="">
+                                    <div class="selected">Seleccionar piloto...</div>
+                                    <ul class="options" role="listbox"></ul>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="top3" class="form-label">Tercer puesto</label>
+                                <div class="custom-select top3-select" data-id="top3" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+                                    <input type="hidden" id="top3" name="top3" value="">
+                                    <div class="selected">Seleccionar piloto...</div>
+                                    <ul class="options" role="listbox"></ul>
+                                </div>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-confirmar">Confirmar TOP 3</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Constructors pane -->
+                    <div class="tab-pane fade" id="pane-constructors" role="tabpanel" aria-labelledby="tab-constructors">
+                        <h5>Tipos de apuesta - Escuderías</h5>
+                        <div class="row">
+                            <div class="col">Apuesta: Equipo ganador</div>
+                            <div class="col">Apuesta: Equipo en podio</div>
+                            <div class="col">Apuesta: Doble podio</div>
                         </div>
                     </div>
 
-                    <div class="row g-3 align-items-center">
-                        <div class="col-md-4">
-                            <select class="form-select" aria-label="Piloto 2">
-                                <option selected>Piloto</option>
-                                <option value="1">Carlos Sainz</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <select class="form-select" aria-label="Piloto 3">
-                                <option selected>Piloto</option>
-                                <option value="1">Fernando Alonso</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 d-grid">
-                            <button type="submit" class="btn btn-confirmar">Confirmar</button>
-                        </div>
+                    <!-- Pilotos pane (original form) -->
+                    <div class="tab-pane fade show active" id="pane-drivers" role="tabpanel" aria-labelledby="tab-drivers">
+                        <form>
+                            <div class="row g-3 mb-3 align-items-center">
+                                <div class="col-md-4">
+                                    <select class="form-select" aria-label="Piloto 1">
+                                        <option selected>Piloto</option>
+                                        <option value="1">Lewis Hamilton</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select" aria-label="Puesto">
+                                        <option selected>Puesto</option>
+                                        <option value="1">1º</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select" aria-label="Piloto del día">
+                                        <option selected>Piloto del día</option>
+                                        <option value="1">Piloto A</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-4">
+                                    <select class="form-select" aria-label="Piloto 2">
+                                        <option selected>Piloto</option>
+                                        <option value="1">Carlos Sainz</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select" aria-label="Piloto 3">
+                                        <option selected>Piloto</option>
+                                        <option value="1">Fernando Alonso</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 d-grid">
+                                    <button type="submit" class="btn btn-confirmar">Confirmar</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
+
+                    <!-- Mis apuestas pane -->
+                    <div class="tab-pane fade" id="pane-mis" role="tabpanel" aria-labelledby="tab-mis">
+                        <h5>Tus apuestas</h5>
+                        <p>Aquí aparecerán tus apuestas activas y su estado.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -162,10 +178,11 @@
         <div class="container d-flex justify-content-between align-items-center">
             <p class="f1-footer-text">TU SITIO SEGURO PARA CORRER</p>
             
-            <img src="img/f1 logo.png" alt="Logo F1" class="f1-logo"> 
+            <img src="../img/Logo.png" alt="Logo F1" class="f1-logo"> 
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="js/apuestas.js"></script>
 </body>
 </html>
