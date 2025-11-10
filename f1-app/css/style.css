@@ -1,6 +1,6 @@
 /*  navbar */
 .site-nav {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.657);
   position: fixed;
   top: 0;
   left: 0;
@@ -54,12 +54,26 @@
   top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.657);
   padding: 2rem;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   width: 90%;
   max-width: 450px;
+}
+
+.logIn-container {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.657);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 450px;
+  margin-top: 5%;
 }
 
 .registro-container h2 {
@@ -70,6 +84,11 @@
 @media (max-width: 768px) {
   .logo-img {
     width: 110px;
+  }
+
+  .logIn-container {
+    padding: 1.5rem;
+    width: 95%;
   }
 
   .registro-container {
