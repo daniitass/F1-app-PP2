@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apuestas F1 - Réplica</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
         /* Estilo para el fondo de la imagen de F1 */
         .f1-header {
@@ -50,7 +50,7 @@
 </head>
 <body>
 
-    <img src="/img/Inicio.jpeg" alt="" width="100%">
+    <img src="{{ url_for('static', filename='img/Inicio.jpeg') }}" alt="" width="100%">
     <div class="f1-header">
         <a href="#" class="salir-btn">Salir</a>
     </div>
@@ -178,11 +178,11 @@
         <div class="container d-flex justify-content-between align-items-center">
             <p class="f1-footer-text">TU SITIO SEGURO PARA CORRER</p>
             
-            <img src="../img/Logo.png" alt="Logo F1" class="f1-logo"> 
+             <img src="{{ url_for('static', filename='img/Logo.png') }}" alt="Logo F1" class="f1-logo">
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="js/apuestas.js"></script>
+   <script src="{{ url_for('static', filename='js/apuestas.js') }}"></script>
 </body>
 </html>
