@@ -3,6 +3,7 @@ from models import db, User, Apuesta
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
+
 app = Flask(__name__)
 
 # -------- CONFIG BASE DE DATOS --------
