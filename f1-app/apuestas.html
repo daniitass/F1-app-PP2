@@ -104,6 +104,7 @@
                                     <ul class="options" role="listbox"></ul>
                                 </div>
                             </div>
+                            <div id="top3Alert" class="alert mt-3" data-base-class="alert mt-3" role="alert" style="display:none;"></div>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-confirmar">Confirmar TOP 3</button>
                             </div>
@@ -205,8 +206,10 @@
 
                     <!-- Mis apuestas pane -->
                     <div class="tab-pane fade" id="pane-mis" role="tabpanel" aria-labelledby="tab-mis">
-                        <h5>Tus apuestas</h5>
-                        <p>Aquí aparecerán tus apuestas activas y su estado.</p>
+                        <h5>Tus apuestas TOP 3</h5>
+                        <div id="misApuestasAlert" class="alert d-none mt-3" data-base-class="alert mt-3" role="alert"></div>
+                        <div id="misApuestasEmpty" class="text-muted mt-3">Todavía no registraste apuestas TOP 3.</div>
+                        <ul id="misApuestasList" class="list-group mt-3"></ul>
                     </div>
                 </div>
             </div>

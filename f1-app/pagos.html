@@ -30,7 +30,7 @@
                 <div class="card shadow-sm border-0 overflow-hidden">
 
                     <div class="position-relative">
-                        <img src="img/f1.avif"card-img-top" alt="Carrera de Fórmula 1">
+                        <img src="img/f1.avif" class="card-img-top" alt="Carrera de Fórmula 1">
                         
                         <a href="apuestas.html" class="btn btn-light btn-sm position-absolute top-0 end-0 m-3">
                             Salir
@@ -43,38 +43,50 @@
                             Finalizar pago de apuesta
                         </h2>
 
-                        <div class="mb-4">
+                        <div id="paymentAlert" class="alert alert-info d-none" data-base-class="alert" role="alert">
+                            Cargando información de la apuesta...
+                        </div>
+
+                        <div id="betSummary" class="mb-4 d-none">
                             <span class="text-currency fw-bold fs-6 align-text-top">USD</span>
                             <span class="display-4 fw-bold text-dark ms-1">$50</span>
+                            <p class="mt-3 mb-1 text-muted small text-uppercase">Detalle de la apuesta</p>
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between"><span>1º puesto</span><strong id="betTop1">-</strong></li>
+                                <li class="list-group-item d-flex justify-content-between"><span>2º puesto</span><strong id="betTop2">-</strong></li>
+                                <li class="list-group-item d-flex justify-content-between"><span>3º puesto</span><strong id="betTop3">-</strong></li>
+                                <li class="list-group-item d-flex justify-content-between"><span>Estado</span><strong id="betStatus">-</strong></li>
+                            </ul>
                         </div>
                         
-                        <form action="#" method="POST">
+                        <div id="paymentForm" class="d-none">
                             <div class="row g-3 mb-3">
-                                
                                 <div class="col-md-6">
                                     <label for="payment-method" class="form-label small">Medio de pago</label>
                                     <select id="payment-method" class="form-select form-select-lg">
-                                        <option selected>Credito/Debito</option>
-                                        <option>Transferencia Bancaria</option>
+                                        <option value="card" selected>Crédito / Débito</option>
+                                        <option value="wire">Transferencia bancaria</option>
                                     </select>
                                 </div>
-                                
                                 <div class="col-md-6">
                                     <label for="card-issuer" class="form-label small">Emisor tarjeta</label>
                                     <select id="card-issuer" class="form-select form-select-lg">
-                                        <option selected>American Express</option>
-                                        <option>Visa</option>
-                                        <option>Mastercard</option>
+                                        <option value="amex" selected>American Express</option>
+                                        <option value="visa">Visa</option>
+                                        <option value="master">Mastercard</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="d-grid mt-4">
-                                <button type="submit" class="btn btn-dark btn-lg py-3 fw-bold">
-                                    Pagar
+                            <div class="d-flex flex-column flex-md-row gap-3 mt-4">
+                                <button id="btnPagar" type="button" class="btn btn-dark btn-lg py-3 fw-bold flex-fill">
+                                    Pagar y activar
+                                </button>
+                                <button id="btnRechazar" type="button" class="btn btn-outline-danger btn-lg py-3 fw-bold flex-fill">
+                                    Rechazar pago
                                 </button>
                             </div>
-                        </form>
+                        </div>
 
                     </div>
 
@@ -93,5 +105,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="js/pagos.js"></script>
 </body>
 </html>
