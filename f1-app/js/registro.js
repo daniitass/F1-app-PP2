@@ -30,6 +30,14 @@ form.addEventListener('submit', async (e)=>{
     showAlert('La contraseña debe tener al menos 1 mayúscula, 1 minúscula y 1 número, y mínimo 6 caracteres', 'danger');
     return;
   }
+  if(!fecha){
+    showAlert('Debes ingresar tu fecha de nacimiento', 'danger');
+    return;
+  }
+  if(!esMayorDeEdad(fecha)){
+    showAlert('Debes ser mayor de 18 años para registrarte', 'danger');
+    return;
+  }
 
   // submit via fetch to backend
   submitBtn.disabled = true;
@@ -52,3 +60,15 @@ form.addEventListener('submit', async (e)=>{
     submitBtn.disabled = false;
   }
 });
+
+function esMayorDeEdad(fechaISO){
+  const nacimiento = new Date(fechaISO);
+  if (Number.isNaN(nacimiento.getTime())) return false;
+  const hoy = new Date();
+  let edad = hoy.getFullYear() - nacimiento.getFullYear();
+  const mes = hoy.getMonth() - nacimiento.getMonth();
+  if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+    edad -= 1;
+  }
+  return edad >= 18;
+}
