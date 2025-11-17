@@ -13,6 +13,7 @@ import sqlite3
 import hashlib
 import hmac
 import binascii
+from datetime import datetime, date
 from urllib.parse import urlparse, parse_qs
 
 HOST = "127.0.0.1"
@@ -142,11 +143,24 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         fecha = data.get('fecha_nacimiento') or None
         password = data.get('password') or ''
 
-        if not nombre or not apellido or not email or not password:
+        if not nombre or not apellido or not email or not password or not fecha:
             self._send_json({'success': False, 'message': 'Faltan campos requeridos'}, status=400)
             return
         if not PWD_REGEX.match(password):
             self._send_json({'success': False, 'message': 'La contraseña no cumple los requisitos'}, status=400)
+            return
+        try:
+            birthdate = datetime.strptime(fecha, '%Y-%m-%d').date()
+        except ValueError:
+            self._send_json({'success': False, 'message': 'Fecha de nacimiento inválida'}, status=400)
+            return
+        today = date.today()
+        if birthdate > today:
+            self._send_json({'success': False, 'message': 'La fecha de nacimiento no puede ser futura'}, status=400)
+            return
+        age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
+        if age < 18:
+            self._send_json({'success': False, 'message': 'Debes ser mayor de 18 años'}, status=400)
             return
 
         pwd_hash = hash_password(password)
