@@ -120,6 +120,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         else:
             self.send_error(404, 'Not found')
 
+    def do_DELETE(self):
+        parsed = urlparse(self.path)
+        if parsed.path == '/apuestas/top3':
+            self._handle_delete_apuesta(parsed)
+            return
+        self.send_error(404, 'Not found')
+
     def _handle_register(self):
         length = int(self.headers.get('Content-Length', 0))
         raw = self.rfile.read(length)
@@ -153,6 +160,39 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 return
             cur.execute('INSERT INTO usuarios (nombre, apellido, email, contrasena, fecha_nacimiento) VALUES (?, ?, ?, ?, ?)',
                         (nombre, apellido, email, pwd_hash, fecha))
+            conn.commit()
+            self._send_json({'success': True})
+        except Exception as e:
+            self._send_json({'success': False, 'message': str(e)}, status=500)
+        finally:
+            try:
+                conn.close()
+            except Exception:
+                pass
+
+    def _handle_delete_apuesta(self, parsed):
+        params = parse_qs(parsed.query or '')
+        bet_id = params.get('bet_id', [None])[0]
+        user_id = params.get('user_id', [None])[0]
+        try:
+            bet_id = int(bet_id)
+            user_id = int(user_id)
+        except (TypeError, ValueError):
+            self._send_json({'success': False, 'message': 'bet_id y user_id inválidos'}, status=400)
+            return
+        if not bet_id or not user_id:
+            self._send_json({'success': False, 'message': 'bet_id y user_id requeridos'}, status=400)
+            return
+
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            ensure_apuestas_table(conn)
+            cur = conn.cursor()
+            cur.execute('SELECT id FROM apuestas_top3 WHERE id = ? AND user_id = ?', (bet_id, user_id))
+            if not cur.fetchone():
+                self._send_json({'success': False, 'message': 'Apuesta no encontrada'}, status=404)
+                return
+            cur.execute('DELETE FROM apuestas_top3 WHERE id = ?', (bet_id,))
             conn.commit()
             self._send_json({'success': True})
         except Exception as e:
@@ -443,7 +483,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Content-Type', 'application/json; charset=utf-8')
         self.send_header('Content-Length', str(len(payload)))
         self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
         self.wfile.write(payload)
@@ -452,7 +492,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # Respond to preflight CORS requests
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
 

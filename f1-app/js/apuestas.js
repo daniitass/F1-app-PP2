@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const tabTop3 = document.getElementById('tab-top3');
   if (tabTop3) tabTop3.addEventListener('shown.bs.tab', loadPilotos);
   const tabMis = document.getElementById('tab-mis');
-  if (tabMis) tabMis.addEventListener('shown.bs.tab', loadMisApuestas);
+  if (tabMis) tabMis.addEventListener('shown.bs.tab', () => loadMisApuestas());
 
   initCustomSelects();
   preventDuplicates();
@@ -145,7 +145,8 @@ function resetTop3Selections(){
   updateCustomDisabled();
 }
 
-async function loadMisApuestas(){
+async function loadMisApuestas(options = {}){
+  const { preserveAlert = false } = options;
   if (!misApuestasList || !misApuestasEmpty) return;
   const userId = localStorage.getItem('user_id');
   if (!userId) {
@@ -153,7 +154,7 @@ async function loadMisApuestas(){
     showAlert(misApuestasAlert, 'Inicia sesión para ver tus apuestas guardadas.', 'info');
     return;
   }
-  hideAlert(misApuestasAlert);
+  if (!preserveAlert) hideAlert(misApuestasAlert);
   try {
     const res = await fetch(`${API_BASE}/apuestas/top3?user_id=${encodeURIComponent(userId)}`);
     const data = await res.json();
@@ -180,20 +181,50 @@ function renderMisApuestas(apuestas){
   misApuestasEmpty.classList.add('d-none');
   apuestas.forEach(ap => {
     const li = document.createElement('li');
-    li.className = 'list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start gap-2';
+    li.className = 'list-group-item';
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'd-flex flex-column flex-md-row justify-content-between align-items-start gap-2';
+
     const picks = document.createElement('div');
-    const statusBadge = renderStatusBadge(ap.status);
     picks.innerHTML = `<div class="d-flex flex-wrap align-items-center gap-2">
       <span><strong>1º:</strong> ${ap.top1}</span>
       <span><strong>2º:</strong> ${ap.top2}</span>
       <span><strong>3º:</strong> ${ap.top3}</span>
-      ${statusBadge}
+      ${renderStatusBadge(ap.status)}
     </div>`;
+
+    const rightCol = document.createElement('div');
+    rightCol.className = 'd-flex flex-column align-items-md-end gap-2 w-100 w-md-auto';
+
     const date = document.createElement('small');
-    date.className = 'text-muted';
+    date.className = 'text-muted text-nowrap';
     date.textContent = formatDate(ap.created_at);
-    li.appendChild(picks);
-    li.appendChild(date);
+
+    const actions = document.createElement('div');
+    actions.className = 'd-flex flex-wrap gap-2';
+    if ((ap.status || '').toLowerCase() !== 'activa') {
+      const payBtn = document.createElement('button');
+      payBtn.type = 'button';
+      payBtn.className = 'btn btn-sm btn-outline-secondary';
+      payBtn.textContent = 'Ir a pago';
+      payBtn.addEventListener('click', () => goToPayment(ap.id));
+      actions.appendChild(payBtn);
+    }
+    const deleteBtn = document.createElement('button');
+    deleteBtn.type = 'button';
+    deleteBtn.className = 'btn btn-sm btn-outline-danger';
+    deleteBtn.textContent = 'Eliminar';
+    deleteBtn.addEventListener('click', () => deleteBet(ap.id));
+    actions.appendChild(deleteBtn);
+
+    rightCol.appendChild(date);
+    rightCol.appendChild(actions);
+
+    wrapper.appendChild(picks);
+    wrapper.appendChild(rightCol);
+
+    li.appendChild(wrapper);
     misApuestasList.appendChild(li);
   });
 }
@@ -232,6 +263,39 @@ function renderStatusBadge(status){
   else if (normalized === 'activa') { text = 'Activa'; cls = 'bg-success'; }
   else if (normalized === 'rechazada') { text = 'Rechazada'; cls = 'bg-danger'; }
   return `<span class="badge ${cls}">${text}</span>`;
+}
+
+function goToPayment(betId){
+  if (!betId) return;
+  localStorage.setItem('pending_bet_id', betId);
+  window.location.href = `pagos.html?bet_id=${encodeURIComponent(betId)}`;
+}
+
+async function deleteBet(betId){
+  const userId = localStorage.getItem('user_id');
+  if (!userId) {
+    showAlert(misApuestasAlert, 'Debes iniciar sesión para gestionar tus apuestas.', 'warning');
+    return;
+  }
+  if (!betId) return;
+  const confirmed = window.confirm('¿Seguro que deseas eliminar esta apuesta?');
+  if (!confirmed) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/apuestas/top3?bet_id=${encodeURIComponent(betId)}&user_id=${encodeURIComponent(userId)}`, {
+      method: 'DELETE',
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showAlert(misApuestasAlert, 'Apuesta eliminada correctamente.', 'success');
+      loadMisApuestas({ preserveAlert: true });
+    } else {
+      showAlert(misApuestasAlert, data.message || 'No se pudo borrar la apuesta.', 'danger');
+    }
+  } catch (err) {
+    console.error('Error deleting bet', err);
+    showAlert(misApuestasAlert, 'Error de comunicación con el servidor.', 'danger');
+  }
 }
 
 /* ---------- Custom select helpers ---------- */
