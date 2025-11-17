@@ -1,6 +1,6 @@
 // apuestas.js - frontend helpers for apuestas.html
 // Loads pilotos from the apuestas API and populates the TOP3 selects.
-const API_BASE = 'http://127.0.0.1:8001';
+const API_BASE = 'http://127.0.0.1:5500';
 
 async function loadPilotos() {
   try {

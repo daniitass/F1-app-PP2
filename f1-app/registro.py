@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
 """Small static file server + /register endpoint WITHOUT third-party frameworks.
 
 Run with: py -3 registro.py
-Then open: http://127.0.0.1:8000/registro.html
+Then open: http://127.0.0.1:5500/registro.html
 """
 import http.server
 import socketserver
@@ -11,11 +10,12 @@ import os
 import re
 import sqlite3
 import hashlib
+import hmac
 import binascii
 from urllib.parse import urlparse
 
 HOST = "127.0.0.1"
-PORT = 8000
+PORT = 5500
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, 'f1_app.db')
 
@@ -32,10 +32,10 @@ def verify_password(stored, password):
         salt = binascii.unhexlify(salt_hex)
         dk = binascii.unhexlify(dk_hex)
         newdk = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, iterations)
-        return hashlib.compare_digest(newdk, dk)
+        return hmac.compare_digest(newdk, dk)
     except Exception:
         return False
-
+    
 PWD_REGEX = re.compile(r'(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}')
 
 def ensure_usuarios_table(conn):
@@ -66,9 +66,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         return full
 
     def do_POST(self):
-        if self.path != '/register':
+        if self.path == '/register':
+            self._handle_register()
+        elif self.path == '/login':
+            self._handle_login()
+        else:
             self.send_error(404, 'Not found')
-            return
+
+    def _handle_register(self):
         length = int(self.headers.get('Content-Length', 0))
         raw = self.rfile.read(length)
         try:
@@ -111,13 +116,79 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             except Exception:
                 pass
 
+    def _handle_login(self):
+        length = int(self.headers.get('Content-Length', 0))
+        raw = self.rfile.read(length)
+        try:
+            data = json.loads(raw.decode('utf-8'))
+        except Exception:
+            self._send_json({'success': False, 'message': 'Invalid JSON'}, status=400)
+            return
+
+        email = (data.get('email') or '').strip().lower()
+        password = data.get('password') or ''
+
+        if not email or not password:
+            self._send_json({'success': False, 'message': 'Email y contraseña requeridos'}, status=400)
+            return
+
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            ensure_usuarios_table(conn)
+            cur = conn.cursor()
+            cur.execute('SELECT id, nombre, apellido, contrasena FROM usuarios WHERE email = ?', (email,))
+            row = cur.fetchone()
+            if not row:
+                self._send_json({'success': False, 'message': 'Email o contraseña incorrectos'}, status=401)
+                return
+            
+            user_id, nombre, apellido, pwd_hash = row
+            # debug: print partial hash and email to help troubleshoot
+            try:
+                print(f"DEBUG login attempt for {email}; stored_hash_start={pwd_hash[:40]}")
+            except Exception:
+                pass
+            ok = verify_password(pwd_hash, password)
+            print(f"DEBUG verify_password returned: {ok}")
+            if not ok:
+                self._send_json({'success': False, 'message': 'Email o contraseña incorrectos'}, status=401)
+                return
+            
+            # Login exitoso
+            self._send_json({
+                'success': True,
+                'user_id': user_id,
+                'user_name': f'{nombre} {apellido}',
+                'token': f'token_{user_id}_{email}'
+            })
+        except Exception as e:
+            self._send_json({'success': False, 'message': str(e)}, status=500)
+        finally:
+            try:
+                conn.close()
+            except Exception:
+                pass
+
     def _send_json(self, obj, status=200):
         payload = json.dumps(obj).encode('utf-8')
         self.send_response(status)
-        self.send_header('Content-Type', 'application/json')
+        # CORS headers to allow requests from the browser (useful if pages are served
+        # from a different origin during development)
+        self.send_header('Content-Type', 'application/json; charset=utf-8')
         self.send_header('Content-Length', str(len(payload)))
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
         self.wfile.write(payload)
+
+    def do_OPTIONS(self):
+        # Respond to preflight CORS requests
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.end_headers()
 
 
 def run():
