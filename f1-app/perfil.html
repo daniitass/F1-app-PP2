@@ -74,7 +74,7 @@
                         name="newPassword"
                         required
                         minlength="8"
-                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$"
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
                         autocomplete="new-password"
                     >
                     <div class="form-text">Debe tener al menos 8 caracteres, con mayúsculas, minúsculas y números.</div>
@@ -95,39 +95,7 @@
         </div>
     </div>
 
-    <script>
-        const form = document.getElementById('perfilForm');
-        const newPassword = document.getElementById('newPassword');
-        const confirmPassword = document.getElementById('confirmPassword');
-        const alertBox = document.getElementById('perfilAlert');
-
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            const passwordsMatch = newPassword.value === confirmPassword.value;
-
-            if (!passwordsMatch) {
-                confirmPassword.setCustomValidity('Las contraseñas no coinciden');
-            } else {
-                confirmPassword.setCustomValidity('');
-            }
-
-            if (form.checkValidity() && passwordsMatch) {
-                showAlert('Contraseña actualizada correctamente (demo).', 'success');
-                form.reset();
-                form.classList.remove('was-validated');
-            } else {
-                showAlert('Revisá los campos marcados en rojo antes de continuar.', 'danger');
-                form.classList.add('was-validated');
-            }
-        });
-
-        function showAlert(message, type) {
-            alertBox.textContent = message;
-            alertBox.className = `alert alert-${type} mt-4`;
-            alertBox.classList.remove('d-none');
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="js/perfil.js"></script>
 </body>
 </html>
-

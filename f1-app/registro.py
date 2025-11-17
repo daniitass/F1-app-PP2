@@ -38,7 +38,7 @@ def verify_password(stored, password):
     except Exception:
         return False
 
-PWD_REGEX = re.compile(r'(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}')
+PWD_REGEX = re.compile(r'(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}')
 
 def ensure_usuarios_table(conn):
     cur = conn.cursor()
@@ -118,6 +118,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_create_apuesta()
         elif self.path == '/apuestas/top3/status':
             self._handle_update_apuesta_status()
+        elif self.path == '/change-password':
+            self._handle_change_password()
         else:
             self.send_error(404, 'Not found')
 
@@ -435,6 +437,63 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             conn.commit()
             bet = self._fetch_apuesta(cur, bet_id)
             self._send_json({'success': True, 'bet': bet})
+        except Exception as e:
+            self._send_json({'success': False, 'message': str(e)}, status=500)
+        finally:
+            try:
+                conn.close()
+            except Exception:
+                pass
+
+    def _handle_change_password(self):
+        length = int(self.headers.get('Content-Length', 0))
+        raw = self.rfile.read(length)
+        try:
+            data = json.loads(raw.decode('utf-8'))
+        except Exception:
+            self._send_json({'success': False, 'message': 'JSON inválido'}, status=400)
+            return
+
+        try:
+            user_id = int(data.get('user_id', 0))
+        except (TypeError, ValueError):
+            self._send_json({'success': False, 'message': 'user_id inválido'}, status=400)
+            return
+
+        current_password = data.get('current_password', '').strip()
+        new_password = data.get('new_password', '').strip()
+
+        if not user_id or not current_password or not new_password:
+            self._send_json({'success': False, 'message': 'Faltan campos requeridos'}, status=400)
+            return
+
+        if not PWD_REGEX.match(new_password):
+            self._send_json({'success': False, 'message': 'La nueva contraseña no cumple los requisitos'}, status=400)
+            return
+
+        if current_password == new_password:
+            self._send_json({'success': False, 'message': 'La nueva contraseña debe ser diferente a la actual'}, status=400)
+            return
+
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            ensure_usuarios_table(conn)
+            cur = conn.cursor()
+            cur.execute('SELECT id, contrasena FROM usuarios WHERE id = ?', (user_id,))
+            row = cur.fetchone()
+            if not row:
+                self._send_json({'success': False, 'message': 'Usuario no encontrado'}, status=404)
+                return
+
+            stored_hash = row[1]
+            if not verify_password(stored_hash, current_password):
+                self._send_json({'success': False, 'message': 'Contraseña actual incorrecta'}, status=401)
+                return
+
+            new_hash = hash_password(new_password)
+            cur.execute('UPDATE usuarios SET contrasena = ? WHERE id = ?', (new_hash, user_id))
+            conn.commit()
+            self._send_json({'success': True, 'message': 'Contraseña actualizada correctamente'})
         except Exception as e:
             self._send_json({'success': False, 'message': str(e)}, status=500)
         finally:
