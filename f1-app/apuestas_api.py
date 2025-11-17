@@ -1,13 +1,5 @@
 #!/usr/bin/env python3
-"""Small API server for apuestas (no HTML) exposing endpoints used by apuestas.html
 
-Run with: py -3 apuestas_api.py
-API endpoints:
- - GET /api/pilotos -> { success: true, pilotos: [ {id, name}, ... ] }
-
-This server listens on 127.0.0.1:8001 and enables CORS so the frontend served
-from another origin (e.g. 127.0.0.1:8000) can call it.
-"""
 import json
 import os
 import sqlite3

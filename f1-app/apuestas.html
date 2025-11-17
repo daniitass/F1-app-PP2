@@ -110,13 +110,36 @@
                         </form>
                     </div>
 
-                    <!-- Constructors pane -->
+                    <!-- apuestas por escuderias -->
                     <div class="tab-pane fade" id="pane-constructors" role="tabpanel" aria-labelledby="tab-constructors">
                         <h5>Tipos de apuesta - Escuderías</h5>
                         <div class="row">
-                            <div class="col">Apuesta: Equipo ganador</div>
-                            <div class="col">Apuesta: Equipo en podio</div>
-                            <div class="col">Apuesta: Doble podio</div>
+                           <div class="mb-3">
+                                <label for="escuderiaGanadora" class="form-label">Escuderia ganadora</label>
+                                <div class="custom-select escuderias-select" data-id="escuderiaGanadora" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+                                    <input type="hidden" id="escuderiaGanadora" name="escuderiaGanadora" value="">
+                                    <div class="selected">Seleccionar escuderia...</div>
+                                    <ul class="options" role="listbox"></ul>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="DoblePodio">¿Habrá doble podio?</label>
+                                <select class="form-select" aria-label="DoblePodio">
+                                    <option selected>Si</option>
+                                    <option value="1">No</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <Label>Escuderia en sumar menos puntos</Label>
+                                <select class="form-select" aria-label="Puesto">
+                                    <option selected>Williams</option>
+                                    <option value="1">Alpine</option>
+                                    <option value="2">Ferrari</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button type="submit" class="btn btn-confirmar">Confirmar</button>
+                            </div>
                         </div>
                     </div>
 
@@ -125,36 +148,52 @@
                         <form>
                             <div class="row g-3 mb-3 align-items-center">
                                 <div class="col-md-4">
-                                    <select class="form-select" aria-label="Piloto 1">
+                                    <label for="Piloto">Piloto</label>
+                                    <select name="Piloto" class="form-select" aria-label="Piloto 1">
                                         <option selected>Piloto</option>
                                         <option value="1">Lewis Hamilton</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <select class="form-select" aria-label="Puesto">
-                                        <option selected>Puesto</option>
-                                        <option value="1">1º</option>
+                                    <label for="puestoPiloto">Puesto</label>
+                                    <select name="puestoPiloto" class="form-select" aria-label="Puesto">
+                                        <option selected>1º</option>
+                                        <option value="2">2º</option>
+                                        <option value="3">3º</option>
+                                        <option value="4">4º</option>
+                                        <option value="5">5º</option>
+                                        <option value="6">6º</option>
+                                        <option value="7">7º</option>
+                                        <option value="8">8º</option>
+                                        <option value="9">9º</option>
+                                        <option value="10">10º</option>
+                                        <option value="11">11º</option>
+                                        <option value="12">12º</option>
+                                        <option value="13">13º</option>   
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <select class="form-select" aria-label="Piloto del día">
-                                        <option selected>Piloto del día</option>
-                                        <option value="1">Piloto A</option>
+                                    <label for="PilotoDia">Piloto del dia</label>
+                                    <select name="PilotoDia" class="form-select" aria-label="Piloto del día">
+                                        <option selected>Si</option>
+                                        <option value="2">No</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="row g-3 align-items-center">
                                 <div class="col-md-4">
-                                    <select class="form-select" aria-label="Piloto 2">
-                                        <option selected>Piloto</option>
-                                        <option value="1">Carlos Sainz</option>
+                                    <label for="TiempoRecord">Tiempo record en esa pista</label>
+                                    <select name="TiempoRecord" class="form-select" aria-label="Piloto 2">
+                                        <option selected>Si</option>
+                                        <option value="2">No</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
+                                    <label for="abandono">Abandona</label>
                                     <select class="form-select" aria-label="Piloto 3">
-                                        <option selected>Piloto</option>
-                                        <option value="1">Fernando Alonso</option>
+                                        <option selected>Si</option>
+                                        <option value="2">No</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4 d-grid">
