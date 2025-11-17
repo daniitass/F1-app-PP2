@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finalizar Pago de Apuesta</title>
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- CSS original inline NO SE TOCA -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
     <style>
         .f1-logo {
             height: 20px;
@@ -31,11 +30,9 @@
                 <div class="card shadow-sm border-0 overflow-hidden">
 
                     <div class="position-relative">
-                        <img src="{{ url_for('static', filename='img/f1.avif') }}" 
-                             class="card-img-top" alt="Carrera de Fórmula 1">
+                        <img src="imagenes/f1.avif" class="card-img-top" alt="Carrera de Fórmula 1">
                         
-                        <a href="{{ url_for('home') }}" 
-                           class="btn btn-light btn-sm position-absolute top-0 end-0 m-3">
+                        <a href="index.html" class="btn btn-light btn-sm position-absolute top-0 end-0 m-3">
                             Salir
                         </a>
                     </div>
@@ -86,18 +83,15 @@
                             
                             <span class="text-danger fw-bold small text-uppercase">
                                 Tu sitio seguro para correr
-                            </span> 
-                            <img src="{{ url_for('static', filename='img/f1 logo.png') }}" 
-                                 alt="Logo F1" class="f1-logo">
+                            </span> <img src="imagenes/f1 logo.png" alt="Logo F1" class="f1-logo">
 
                         </div>
                     </div>
                     
-                </div> 
-            </div>
+                </div> </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
